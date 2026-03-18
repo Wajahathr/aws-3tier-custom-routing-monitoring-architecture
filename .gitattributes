@@ -1,0 +1,19 @@
+# ==========================================
+# 1. HIDE APPLICATION CODE (VProfile App)
+# GitHub ko batana ke yeh code maine deploy kiya hai, likha nahi.
+# ==========================================
+*.java linguist-vendored
+*.xml linguist-vendored
+*.properties linguist-vendored
+*.html linguist-vendored
+*.css linguist-vendored
+*.js linguist-vendored
+*.json linguist-vendored
+
+# ==========================================
+# 2. HIGHLIGHT DEVOPS & INFRASTRUCTURE CODE
+# GitHub ko batana ke meri asal skills in files mein hain.
+# ==========================================
+*.sh linguist-detectable=true
+*AWS linguist-detectable=true
+Dockerfile linguist-detectable=true
