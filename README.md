@@ -91,3 +91,6 @@ sudo apt install iptables-persistent -y
 
 # Monitor ICMP traffic for testing connectivity
 sudo tcpdump -n -i any icmp
+
+
+![Nat-Routing](screenshots/routing.png) 
