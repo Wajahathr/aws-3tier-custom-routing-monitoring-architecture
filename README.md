@@ -30,7 +30,7 @@ This architecture relies on the seamless integration of compute, networking, and
 1. **Traffic Ingress (ALB & TG):** The Application Load Balancer (ALB) sits in the public subnets and receives internet traffic. It continuously monitors the Target Group (TG), which contains the dynamic IPs of healthy EC2 instances[cite: 7]. The TG's health check status codes were explicitly modified to accommodate application redirects[cite: 2].
 2. **Compute Scaling (ASG & Launch Template):** The Auto Scaling Group (ASG) manages instance count. When a new server is required, the ASG utilizes the assigned Launch Template[cite: 2].
 3. **Application Deployment (Docker, IAM & ECR):** The Launch Template contains a `User Data` script. Upon boot, this script uses an attached IAM Role (`EC2-ECR-Push-Role`) [cite: 25] to securely authenticate with Amazon ECR, pull the custom Docker image, and run it.
-4. **Outbound Internet via Custom Routing (NAT):** Because the ASG launches instances in private subnets, they cannot reach ECR directly. The custom NAT Instance intercepts their outbound requests[cite: 21], masquerades the IPs, fetches the Docker image from ECR via the IGW, and returns it to the private instances.
+4. **Outbound Internet via Custom Routing (NAT):** Because the ASG launches instances in private subnets, they cannot reach ECR directly. The custom NAT Instance intercepts their outbound requests, masquerades the IPs, fetches the Docker image from ECR via the IGW, and returns it to the private instances.
 5. **Real-Time Alerting (CloudWatch, SNS, Lambda, Discord):** A CloudWatch alarm monitors the ASG's CPU metrics[cite: 28]. Upon breaching defined thresholds, it triggers an SNS topic[cite: 28]. An AWS Lambda function is subscribed to this topic; it processes the SNS payload using configured environment variables and pushes a formatted alert to a Discord channel via a Webhook URL[cite: 28].
 
 ---
@@ -65,12 +65,14 @@ While Security Groups act as guards, Route Tables provide the map for data packe
 
 **B. Private Route Table (Assigned to Private Subnets - ASG & RDS)** [cite: 19]
 * **Target: `local` | Destination: `10.0.0.0/16`** -> Connects App servers and the Database directly[cite: 20].
-* **Target: `eni-xxxx` (NAT Instance) | Destination: `0.0.0.0/0`** -> Routes private internet traffic through the custom NAT instance[cite: 21].
+* **Target: `eni-xxxx` (NAT Instance) | Destination: `0.0.0.0/0`** -> Routes private internet traffic through the custom NAT instance.
 
 ---
 
 ## Custom NAT Routing Configuration
 To make the custom NAT instance function as a router, IP forwarding and masquerading were explicitly configured at the OS level:
+
+![NAT-Routing](screenshots/routing.png)
 ```bash
 # Verify network interfaces
 ip a  
