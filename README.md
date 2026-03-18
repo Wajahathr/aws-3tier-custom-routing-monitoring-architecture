@@ -1,7 +1,7 @@
 # End-to-End AWS 3-Tier Architecture with Docker & Real-Time Monitoring
 
-![AWS Architecture Diagram](./images/architecture-diagram.png) 
-*(Note: Upload your architecture diagram image to an `images` folder and link it here)*
+![AWS Architecture Diagram](screenshots/Project4D.png) 
+
 
 ## Project Overview
 This project demonstrates a production-ready, highly available 3-tier architecture deployed on AWS. [cite_start]The foundational infrastructure includes a custom VPC, five carefully configured Security Groups, and customized route tables for precise traffic routing[cite: 1]. 
